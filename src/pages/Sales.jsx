@@ -12,10 +12,7 @@ function Sales() {
 
   return (
     <div className="container-fluid p-2 p-md-3">
-
-      {/* ===================== */}
-      {/* HEADER */}
-      {/* ===================== */}
+      
       <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
           <h2 className="fw-bold mb-1">Sales</h2>
@@ -35,7 +32,7 @@ function Sales() {
       <div className="row g-3 mb-4">
         <KPICardsVentas/>
       </div>
-      {/* ===================== */}
+
       <TableVentas />
       <SaleFormModal 
         isOpen={isModalOpen} 
