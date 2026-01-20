@@ -1,5 +1,6 @@
 import React from 'react';
 import { Plus, Pencil, Trash2, DollarSign, Percent } from 'lucide-react';
+import TableVentas from '../components/ui/TableVentas.jsx';
 
 const salesStats = [
   {
@@ -82,123 +83,8 @@ function Sales() {
           );
         })}
       </div>
-
       {/* ===================== */}
-      {/* FILTERS */}
-      {/* ===================== */}
-      <div className="card shadow-sm mb-4">
-        <div className="card-body">
-          <div className="row g-3 align-items-end">
-            <div className="col-12 col-md-4">
-              <label className="form-label small text-secondary">
-                Company
-              </label>
-              <select className="form-select">
-                <option>All Companies</option>
-              </select>
-            </div>
-
-            <div className="col-6 col-md-4">
-              <label className="form-label small text-secondary">
-                From
-              </label>
-              <input type="date" className="form-control" />
-            </div>
-
-            <div className="col-6 col-md-4">
-              <label className="form-label small text-secondary">
-                To
-              </label>
-              <input type="date" className="form-control" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ===================== */}
-      {/* DESKTOP TABLE */}
-      {/* ===================== */}
-      <div className="table-responsive d-none d-md-block rounded-3 border shadow-sm overflow-hidden">
-        <table className="table mb-0 align-middle">
-          <thead>
-            <tr className="small text-uppercase text-secondary">
-              <th className="px-4 py-3">Date</th>
-              <th className="py-3">Branch</th>
-              <th className="py-3 text-end">Net Sales</th>
-              <th className="py-3 text-end">Tax</th>
-              <th className="py-3 text-end">Discounts</th>
-              <th className="py-3 text-end px-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {salesData.map((sale) => (
-              <tr key={sale.id} className="border-top">
-                <td className="px-4 py-3">{sale.date}</td>
-                <td className="py-3">{sale.branch}</td>
-                <td className="py-3 text-end fw-semibold">{sale.net}</td>
-                <td className="py-3 text-end">{sale.tax}</td>
-                <td className="py-3 text-end">{sale.discount}</td>
-                <td className="py-3 text-end px-4">
-                  <button className="btn btn-link p-1 me-2">
-                    <Pencil size={16} />
-                  </button>
-                  <button className="btn btn-link text-danger p-1">
-                    <Trash2 size={16} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* ===================== */}
-      {/* MOBILE CARDS */}
-      {/* ===================== */}
-      <div className="d-md-none">
-        {salesData.map((sale) => (
-          <div key={sale.id} className="card mb-3 shadow-sm">
-            <div className="card-body">
-
-              <div className="mb-2">
-                <small className="text-secondary">Date</small>
-                <div className="fw-semibold">{sale.date}</div>
-              </div>
-
-              <div className="mb-2">
-                <small className="text-secondary">Branch</small>
-                <div>{sale.branch}</div>
-              </div>
-
-              <div className="mb-2">
-                <small className="text-secondary">Net Sales</small>
-                <div className="fw-bold">{sale.net}</div>
-              </div>
-
-              <div className="mb-2">
-                <small className="text-secondary">Tax</small>
-                <div>{sale.tax}</div>
-              </div>
-
-              <div className="mb-3">
-                <small className="text-secondary">Discounts</small>
-                <div>{sale.discount}</div>
-              </div>
-
-              <div className="d-flex justify-content-end gap-2">
-                <button className="btn btn-outline-dark btn-sm">
-                  <Pencil size={16} />
-                </button>
-                <button className="btn btn-outline-danger btn-sm">
-                  <Trash2 size={16} />
-                </button>
-              </div>
-
-            </div>
-          </div>
-        ))}
-      </div>
-
+      <TableVentas />
     </div>
   );
 }
