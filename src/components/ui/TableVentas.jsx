@@ -18,7 +18,6 @@ function TableVentas() {
     async function loadVentas() {
       try {
         const res = await getVentas();
-        // Axios guarda la respuesta en res.data
         setVentas(res.data);
       } catch (error) {
         console.error("Error al cargar ventas:", error);
@@ -41,26 +40,6 @@ function TableVentas() {
 
   return (
     <section className='d-flex flex-column w-100'>
-      {/* FILTERS (Se mantienen igual) */}
-      <div className="card shadow-sm mb-4">
-        <div className="card-body">
-          <div className="row g-3 align-items-end">
-            <div className="col-12 col-md-4">
-              <label className="form-label small text-secondary">Company</label>
-              <select className="form-select"><option>All Companies</option></select>
-            </div>
-            <div className="col-6 col-md-4">
-              <label className="form-label small text-secondary">From</label>
-              <input type="date" className="form-control" />
-            </div>
-            <div className="col-6 col-md-4">
-              <label className="form-label small text-secondary">To</label>
-              <input type="date" className="form-control" />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* DESKTOP TABLE */}
       <div className="table-responsive d-none d-md-block rounded-3 border shadow-sm overflow-hidden">
         <table className="table mb-0 align-middle">

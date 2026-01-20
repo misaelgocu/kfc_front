@@ -48,15 +48,11 @@ export function AppSidebar() {
         </nav>
       </div>
 
+      
       {/* Footer */}
-      <div className="p-3 border-top text-center">
+      <div className="p-3 border-top text-center mt-auto">
         <small className="text-muted">© 2026 KFC Enterprise</small>
       </div>
-
-      <style>{`
-        .hover-bg-light:hover { background-color: #f8f9fa; }
-        .nav-link { transition: 0.2s; margin-bottom: 4px; }
-      `}</style>
     </div>
   );
 }
