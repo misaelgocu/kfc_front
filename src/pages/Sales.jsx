@@ -1,11 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Plus, Pencil, Trash2, DollarSign, Percent } from 'lucide-react';
 import TableVentas from '../components/ui/TableVentas.jsx';
 import KPICardsVentas from '../components/ui/KPICardsVentas.jsx';
+import SaleFormModal from '../components/forms/SaleFormModal.jsx';
 
 
 
 function Sales() {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="container-fluid p-2 p-md-3">
 
@@ -20,7 +24,9 @@ function Sales() {
           </small>
         </div>
 
-        <button className="btn btn-danger fw-semibold d-flex align-items-center gap-2">
+        <button 
+        onClick={() => setIsModalOpen(true)}
+        className="btn btn-danger fw-semibold d-flex align-items-center gap-2">
           <Plus size={16} />
           Add Sale
         </button>
@@ -31,6 +37,10 @@ function Sales() {
       </div>
       {/* ===================== */}
       <TableVentas />
+      <SaleFormModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   );
 }
