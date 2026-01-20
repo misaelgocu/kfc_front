@@ -9,10 +9,9 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 // Endpoints de la API
 export const API_ENDPOINTS = {
+  // Aquí agregar endpoints
   VENTAS: '/api/ventas/',
-  // Aquí puedes agregar más endpoints según los vayas necesitando
-  // PRODUCTOS: '/api/productos/',
-  // CLIENTES: '/api/clientes/',
+  EMPRESAS: '/api/empresas/'
 };
 
 export default API_BASE_URL;
