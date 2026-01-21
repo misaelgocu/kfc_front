@@ -1,155 +1,256 @@
-import React from 'react';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
-
-const branchesData = [
-  {
-    id: 'branch_1',
-    name: 'KFC Reforma',
-    code: 'MX001',
-    brand: 'KFC Express',
-    startDate: '2020-01-15',
-  },
-  {
-    id: 'branch_2',
-    name: 'KFC Polanco',
-    code: 'MX002',
-    brand: 'KFC Express',
-    startDate: '2021-03-20',
-  },
-  {
-    id: 'branch_3',
-    name: 'KFC Santa Fe',
-    code: 'MX003',
-    brand: 'KFC Traditional',
-    startDate: '2019-06-05',
-  },
-  {
-    id: 'branch_4',
-    name: 'KFC Bogotá Centro',
-    code: 'CO001',
-    brand: 'KFC Colombia Premium',
-    startDate: '2022-01-01',
-  },
-];
+import React, { useState, useEffect } from "react";
+import { Plus, Pencil, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
+import {
+  getSucursales,
+  createSucursal,
+  updateSucursal,
+  deleteSucursal,
+} from "../api/sucursales.api";
+import BranchFormModal from "../components/forms/BranchFormModal";
 
 function Branches() {
-  return (
-    <div className="container-fluid p-2 p-md-3">
+  const [sucursales, setSucursales] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedSucursal, setSelectedSucursal] = useState(null);
+  const [formLoading, setFormLoading] = useState(false);
 
+  // ========== CARGAR SUCURSALES ==========
+  const fetchSucursales = async () => {
+    try {
+      setLoading(true);
+      const response = await getSucursales();
+      setSucursales(response.data);
+    } catch (error) {
+      toast.error("Error al cargar sucursales");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSucursales();
+  }, []);
+
+  // ========== CREAR/ACTUALIZAR ==========
+  const handleSubmit = async (data) => {
+    try {
+      setFormLoading(true);
+
+      // Convertir valores vacíos a null para campos opcionales
+      const formData = {
+        ...data,
+        fecha_inicio_suc: data.fecha_inicio_suc || null,
+        fecha_fin_suc: data.fecha_fin_suc || null,
+      };
+
+      if (selectedSucursal) {
+        await updateSucursal(selectedSucursal.id_sucursal, formData);
+        toast.success("Sucursal actualizada correctamente");
+      } else {
+        await createSucursal(formData);
+        toast.success("Sucursal creada correctamente");
+      }
+
+      setShowModal(false);
+      setSelectedSucursal(null);
+      fetchSucursales();
+    } catch (error) {
+      const errorMsg =
+        error.response?.data?.cc_suc?.[0] ||
+        error.response?.data?.id_marca?.[0] ||
+        "Error al guardar sucursal";
+      toast.error(errorMsg);
+      console.error(error);
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  // ========== ELIMINAR ==========
+  const handleDelete = async (sucursal) => {
+    if (!window.confirm(`¿Eliminar sucursal "${sucursal.nombre_sucursal}"?`))
+      return;
+
+    try {
+      await deleteSucursal(sucursal.id_sucursal);
+      toast.success("Sucursal eliminada");
+      fetchSucursales();
+    } catch (error) {
+      toast.error("Error al eliminar sucursal");
+      console.error(error);
+    }
+  };
+
+  // ========== ABRIR MODAL ==========
+  const openCreateModal = () => {
+    setSelectedSucursal(null);
+    setShowModal(true);
+  };
+
+  const openEditModal = (sucursal) => {
+    setSelectedSucursal(sucursal);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedSucursal(null);
+  };
+
+  // ========== FORMATEAR FECHA ==========
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    return new Date(dateString).toLocaleDateString("es-MX");
+  };
+
+  if (loading) {
+    return (
+      <div className="container-fluid p-2 text-center">
+        <div className="spinner-border text-danger" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container-fluid p-2">
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
-          <h2 className="fw-bold mb-1">Branches</h2>
+          <h2 className="fw-bold m-0">Sucursales</h2>
           <small className="text-secondary">
-            Manage physical restaurant locations
+            Gestiona las sucursales del sistema ({sucursales.length})
           </small>
         </div>
-
-        <button className="btn btn-danger fw-semibold d-flex align-items-center gap-2">
-          <Plus size={16} />
-          Add Branch
+        <button className="btn btn-danger fw-bold" onClick={openCreateModal}>
+          <Plus size={18} className="me-1" /> Nueva Sucursal
         </button>
       </div>
 
-      {/* ===================== */}
-      {/* DESKTOP TABLE */}
-      {/* ===================== */}
-      <div className="table-responsive d-none d-md-block rounded-3 border shadow-sm overflow-hidden">
-        <table className="table mb-0 align-middle">
+      {/* TABLA DESKTOP */}
+      <div className="table-responsive d-none d-md-block">
+        <table className="table align-middle">
           <thead>
-            <tr className="small text-uppercase text-secondary">
-              <th className="px-4 py-3">Branch Name</th>
-              <th className="py-3">Code</th>
-              <th className="py-3">Brand</th>
-              <th className="py-3">Start Date</th>
-              <th className="py-3 text-end px-4">Actions</th>
+            <tr className="text-secondary small">
+              <th>ID</th>
+              <th>NOMBRE</th>
+              <th>CC SUC</th>
+              <th>COMPAÑÍA</th>
+              <th>ID MARCA</th>
+              <th>CREADA</th>
+              <th className="text-end">ACCIONES</th>
             </tr>
           </thead>
           <tbody>
-            {branchesData.map((branch) => (
-              <tr key={branch.id} className="border-top">
-                <td className="px-4 py-3 fw-semibold">
-                  {branch.name}
+            {sucursales.length === 0 ? (
+              <tr>
+                <td colSpan="7" className="text-center text-secondary py-4">
+                  No hay sucursales registradas
                 </td>
-                <td className="py-3">
-                  {branch.code}
-                </td>
-                <td className="py-3">
-                  {branch.brand}
-                </td>
-                <td className="py-3 text-secondary">
-                  {branch.startDate}
-                </td>
-                <td className="py-3 text-end px-4">
+              </tr>
+            ) : (
+              sucursales.map((sucursal) => (
+                <tr key={sucursal.id_sucursal}>
+                  <td className="text-secondary">{sucursal.id_sucursal}</td>
+                  <td className="fw-bold">{sucursal.nombre_sucursal}</td>
+                  <td className="text-secondary">{sucursal.cc_suc}</td>
+                  <td className="text-secondary">{sucursal.compania}</td>
+                  <td className="text-secondary">{sucursal.id_marca}</td>
+                  <td className="text-secondary">
+                    {formatDate(sucursal.created_at)}
+                  </td>
+                  <td className="text-end">
+                    <button
+                      className="btn btn-link text-dark p-1"
+                      onClick={() => openEditModal(sucursal)}
+                      title="Editar"
+                    >
+                      <Pencil size={16} />
+                    </button>
+                    <button
+                      className="btn btn-link text-danger p-1"
+                      onClick={() => handleDelete(sucursal)}
+                      title="Eliminar"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+      {/* CARDS MOBILE */}
+      <div className="d-md-none">
+        {sucursales.length === 0 ? (
+          <div className="text-center text-secondary py-4">
+            No hay sucursales registradas
+          </div>
+        ) : (
+          sucursales.map((sucursal) => (
+            <div key={sucursal.id_sucursal} className="card mb-3 shadow-sm">
+              <div className="card-body">
+                <div className="mb-2">
+                  <small className="text-secondary">Sucursal</small>
+                  <div className="fw-bold">{sucursal.nombre_sucursal}</div>
+                </div>
+
+                <div className="row mb-2">
+                  <div className="col-6">
+                    <small className="text-secondary">CC SUC</small>
+                    <div>{sucursal.cc_suc}</div>
+                  </div>
+                  <div className="col-6">
+                    <small className="text-secondary">Compañía</small>
+                    <div>{sucursal.compania}</div>
+                  </div>
+                </div>
+
+                <div className="mb-2">
+                  <small className="text-secondary">ID Marca</small>
+                  <div>{sucursal.id_marca}</div>
+                </div>
+
+                <div className="mb-3">
+                  <small className="text-secondary">Creada</small>
+                  <div>{formatDate(sucursal.created_at)}</div>
+                </div>
+
+                <div className="d-flex justify-content-end gap-2">
                   <button
-                    className="btn btn-link p-1 me-2"
-                    title="Edit"
+                    className="btn btn-outline-dark btn-sm"
+                    onClick={() => openEditModal(sucursal)}
                   >
                     <Pencil size={16} />
                   </button>
                   <button
-                    className="btn btn-link text-danger p-1"
-                    title="Delete"
+                    className="btn btn-outline-danger btn-sm"
+                    onClick={() => handleDelete(sucursal)}
                   >
                     <Trash2 size={16} />
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* ===================== */}
-      {/* MOBILE CARDS */}
-      {/* ===================== */}
-      <div className="d-md-none">
-        {branchesData.map((branch) => (
-          <div key={branch.id} className="card mb-3 shadow-sm">
-            <div className="card-body">
-
-              <div className="mb-2">
-                <small className="text-secondary">Branch</small>
-                <div className="fw-bold">{branch.name}</div>
+                </div>
               </div>
-
-              <div className="mb-2">
-                <small className="text-secondary">Code</small>
-                <div>{branch.code}</div>
-              </div>
-
-              <div className="mb-2">
-                <small className="text-secondary">Brand</small>
-                <div>{branch.brand}</div>
-              </div>
-
-              <div className="mb-3">
-                <small className="text-secondary">Start Date</small>
-                <div className="text-secondary">{branch.startDate}</div>
-              </div>
-
-              <div className="d-flex justify-content-end gap-2">
-                <button
-                  className="btn btn-outline-dark btn-sm"
-                  title="Edit"
-                >
-                  <Pencil size={16} />
-                </button>
-                <button
-                  className="btn btn-outline-danger btn-sm"
-                  title="Delete"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
+      {/* MODAL */}
+      {showModal && (
+        <BranchFormModal
+          sucursal={selectedSucursal}
+          onSubmit={handleSubmit}
+          onClose={closeModal}
+          isLoading={formLoading}
+        />
+      )}
     </div>
   );
 }
-
 export default Branches;

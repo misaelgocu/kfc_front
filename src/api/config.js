@@ -12,7 +12,8 @@ export const API_ENDPOINTS = {
   // Aquí agregar endpoints
   VENTAS: '/api/ventas/',
   EMPRESAS: '/api/empresas/',
-  MARCAS: '/api/marcas/'
+  MARCAS: '/api/marcas/',
+  SUCURSALES: '/api/sucursales/',
 };
 
 export default API_BASE_URL;
