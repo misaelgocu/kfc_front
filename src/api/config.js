@@ -5,7 +5,7 @@
  */
 
 // URL base de la API según el entorno
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://masters-humanities-creek-authority.trycloudflare.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://exam-robot-balanced-menu.trycloudflare.com/';
 
 // Endpoints de la API
 export const API_ENDPOINTS = {
