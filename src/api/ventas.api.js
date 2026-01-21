@@ -9,6 +9,14 @@ export const getVentas = () => {
   return apiClient.get(API_ENDPOINTS.VENTAS);
 };
 
+export const getVentasCompletas = () => {
+  return apiClient.get(API_ENDPOINTS.VENTAS_COMPLETAS);
+};
+
+export const getVentaById = (id) => {
+  return apiClient.get(`${API_ENDPOINTS.VENTAS}${id}/`);
+};
+
 // Aquí puedes agregar más funciones según las necesites
 // export const getVentaById = (id) => {
 //   return apiClient.get(`${API_ENDPOINTS.VENTAS}${id}/`);

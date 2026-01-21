@@ -2,7 +2,7 @@ import { Building2, Tags, MapPin, DollarSign, LayoutDashboard } from 'lucide-rea
 import { NavLink } from 'react-router-dom';
 
 const navigationItems = [
-  { title: 'Dashboard', url: '/', icon: LayoutDashboard },
+  // { title: 'Dashboard', url: '/', icon: LayoutDashboard },
   { title: 'Companies', url: '/companies', icon: Building2 },
   { title: 'Brands', url: '/brands', icon: Tags },
   { title: 'Branches', url: '/branches', icon: MapPin },
