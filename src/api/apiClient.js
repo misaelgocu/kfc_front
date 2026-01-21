@@ -6,6 +6,8 @@ const apiClient = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'cloudflare-cdn-cookie-protection': 'false',
+    'bypass-tunnel-reminder': 'true',
   }
 });
 
