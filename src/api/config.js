@@ -11,7 +11,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://masters-humanities
 export const API_ENDPOINTS = {
   // Aquí agregar endpoints
   VENTAS: '/api/ventas/',
-  VENTAS_COMPLETAS: '/api/ventas-completas',
+  VENTAS_COMPLETAS: '/api/ventas-completas/',
   EMPRESAS: '/api/empresas/',
   MARCAS: '/api/marcas/',
   SUCURSALES: '/api/sucursales/',
