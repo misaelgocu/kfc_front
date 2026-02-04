@@ -60,7 +60,7 @@ export function MainLayout() {
           <button onClick={toggleSidebar} className="btn btn-light border-0 p-2 me-2">
             <Menu size={20} />
           </button>
-          <span className="fw-bold text-truncate">KFC Enterprise Dashboard</span>
+          <span className="fw-bold text-truncate">Enterprise Dashboard</span>
         </header>
 
         <main className="p-3 p-md-4 flex-grow-1">

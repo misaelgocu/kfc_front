@@ -51,7 +51,7 @@ export function AppSidebar() {
       
       {/* Footer */}
       <div className="p-3 border-top text-center mt-auto">
-        <small className="text-muted">© 2026 KFC Enterprise</small>
+        <small className="text-muted">© 2026 Enterprise</small>
       </div>
     </div>
   );
