@@ -16,10 +16,10 @@ export function AppSidebar() {
       <div className="p-3 border-bottom">
         <div className="d-flex align-items-center gap-3">
           <div className="bg-danger text-white rounded d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
-            <span className="fw-bold h4 m-0">K</span>
+            <span className="fw-bold h4 m-0">D</span>
           </div>
           <div>
-            <h6 className="mb-0 fw-bold">KFC ERP</h6>
+            <h6 className="mb-0 fw-bold">ERP Demo</h6>
             <small className="text-muted">Sales Management</small>
           </div>
         </div>
