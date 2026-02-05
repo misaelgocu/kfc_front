@@ -10,7 +10,7 @@ export const getVentas = () => {
 };
 
 export const getVentasCompletas = () => {
-  return apiClient.get(API_ENDPOINTS.VENTAS); //VENTAS_COMPLETAS
+  return apiClient.get(API_ENDPOINTS.VENTAS_COMPLETAS); //VENTAS_COMPLETAS
 };
 
 export const getVentaById = (id) => {
